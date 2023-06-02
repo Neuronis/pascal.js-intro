@@ -105,8 +105,19 @@ export class SyntaxAnalyzer
     scanMultiplier()
     {
         let integerConstant = this.symbol;
+        let isNegative = false;
 
+        if (this.symbol.symbolCode === SymbolsCodes.minus) {
+            isNegative = true;
+            this.nextSym();
+        }
+        
+        integerConstant = this.symbol;
         this.accept(SymbolsCodes.integerConst);
+
+        if (isNegative) {
+            integerConstant = integerConstant.value * (-1);
+        }
 
         return new NumberConstant(integerConstant);
     }
